@@ -82,4 +82,14 @@ public class BusinessAccount {
     public String getType() {
         return type;
     }
+    public static void viewAccount(String id) {
+        for (int i = 0; i < numAccounts; i++) {
+            BusinessAccount account = accounts[i];
+            if (account.getId().equals(id)) {
+                System.out.println("ID: " + account.getId());
+                System.out.println("Balance: " + account.getBalance());
+            }
+        }
+    }
+
 }

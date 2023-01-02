@@ -54,4 +54,14 @@ public class PersonalAccount {
     public double getBalance() {
         return balance;
     }
+    public static void viewAccount(String id) {
+        for (int i = 0; i < numAccounts; i++) {
+            PersonalAccount account = accounts[i];
+            if (account.getId().equals(id)) {
+                System.out.println("ID: " + account.getId());
+                System.out.println("Balance: " + account.getBalance());
+            }
+        }
+    }
+
 }

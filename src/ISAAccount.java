@@ -73,4 +73,14 @@ public class ISAAccount {
     public double getBalance() {
         return balance;
     }
+    public static void viewAccount(String id) {
+        for (int i = 0; i < numAccounts; i++) {
+            ISAAccount account = accounts[i];
+            if (account.getId().equals(id)) {
+                System.out.println("ID: " + account.getId());
+                System.out.println("Balance: " + account.getBalance());
+            }
+        }
+    }
+
 }

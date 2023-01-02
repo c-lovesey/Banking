@@ -9,7 +9,7 @@ public class BusinessType {
     }
 
     public static String inputType() {
-        System.out.print("Enter the type of business: ");
+        System.out.print("Enter the business type (Sole Trader (ST), Limited Company (LC), Partnership (P), Enterprise (E), PLC, Charity (C), Public Sector(PS)): ");
         return scanner.nextLine();
     }
 
