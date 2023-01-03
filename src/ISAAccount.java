@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ISAAccount {
-    private static ISAAccount[] accounts = new ISAAccount[100];
+    private static ISAAccount[] accounts = new ISAAccount[100];//same array of objects that isnt ever used
     private static int numAccounts;
 
     private String id;
@@ -18,13 +18,13 @@ public class ISAAccount {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
+        //asks how to search
         int id = 0;
         System.out.println("ISA account Creation");
         System.out.println("1. Search with User ID");
         System.out.println("2. Search with User details");
         int choice = scanner.nextInt();
-        if (choice == 2) {
+        if (choice == 2) {//same user input probs do need to put this in a method
             System.out.print("Enter Username: ");
             String Username = scanner.next();
             System.out.print("Enter Firstname: ");
@@ -52,7 +52,7 @@ public class ISAAccount {
                 System.out.println("Account Created");
                 System.out.println("");
 
-                try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {
+                try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {//gets last id
                     String line;
                     while ((line = br.readLine()) != null) {
                         String[] values = line.split(",");
@@ -62,14 +62,14 @@ public class ISAAccount {
                 } catch (IOException e) {
                     id = 1;
                 }
-            } else {
+            } else {//checks if they already have an isa account
                 String New = FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
                 if(findID(New) == true){
                     System.out.println("User already has an ISA account");
                     main(new String[0]);
                 }
             }
-        } else {
+        } else {//asks for id to be entered
             System.out.print("Enter ID: ");
             id = scanner.nextInt();
         }
@@ -81,8 +81,8 @@ public class ISAAccount {
         if (balance < 1) {
             System.out.println("User cannot create an account with less than $1");
         } else {
-            String ISAID = createAccount(id, balance);
-            saveToCSV("ISAAccounts.csv", ISAID, id, balance);
+            String ISAID = createAccount(id, balance);//creates a new account
+            saveToCSV("ISAAccounts.csv", ISAID, id, balance);//saves account
             System.out.println("ISA Account Created.");
         }
 
@@ -90,7 +90,7 @@ public class ISAAccount {
 
     }
 
-    public static boolean findID(String id) {
+    public static boolean findID(String id) {//checks if the id is in the accounts file
         try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -107,7 +107,7 @@ public class ISAAccount {
         return false;
     }
 
-    public static String createAccount(int id, double balance) {
+    public static String createAccount(int id, double balance) {//very weird idk what i did here but enjoy not sure if works
         List<String> idList = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {

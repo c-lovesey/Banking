@@ -1,9 +1,9 @@
 import java.util.Scanner;
 
-public class Menu {
+public class Menu {//program launches from here
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
+        //initialises scanner to get user input on what to do
         System.out.println("1. Create account");
         System.out.println("2. Register Business");
         System.out.println("2. View account");
@@ -16,7 +16,7 @@ public class Menu {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    CreateAccount.main(new String[0]);
+                    CreateAccount.main(new String[0]);//calls the selected method //bad way of doing this chadrack pls fix
                     break;
                 case 2:
                     BusinessCreate.main(new String[0]);
@@ -40,7 +40,7 @@ public class Menu {
             }
         } catch (Exception e) {
             System.out.println("Invalid input");
-            main(new String[0]);
+            main(new String[0]);//also bad just loop
         }
     }
 }

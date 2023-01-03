@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class CreateAccount {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
+        //create account screen
         System.out.println("1. Personal account");
         System.out.println("2. ISA account");
         System.out.println("3. Business account");
@@ -13,7 +13,7 @@ public class CreateAccount {
 
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
-
+        //gets user input and switches to that
         switch (choice) {
             case 1:
                 PersonalAccount.main(new String[0]);
@@ -26,14 +26,16 @@ public class CreateAccount {
                 break;
             case 4:
 
-
+                //code for creating a user is here
                 System.out.print("Enter Username: ");
                 String Username = scanner.next();
+                //checks  if username is taken
                 if (FindUser.findUsername(Username) == true) {
                     System.out.println("Username is already taken");
                     main(new String[0]);
                     break;
                 }
+                //if not asks for all details
                 System.out.print("Enter Firstname: ");
                 String Firstname = scanner.next();
                 System.out.print("Enter LastName: ");
@@ -46,6 +48,7 @@ public class CreateAccount {
                 int birthDay = scanner.nextInt();
                 System.out.print("Enter Postcode: ");
                 String address = scanner.next();
+                //if details are already in system it rejects them if not it creates a new user in the users.csv
                 if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null)
             {
                 User user = new User(Username, Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);

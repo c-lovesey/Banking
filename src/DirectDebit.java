@@ -8,7 +8,7 @@ public class DirectDebit {
     private String payee;
     private double amount;
 
-    public DirectDebit(String id, String payee, double amount) {
+    public DirectDebit(String id, String payee, double amount) {//done nothing with this do what you want :)
         this.id = id;
         this.payee = payee;
         this.amount = amount;

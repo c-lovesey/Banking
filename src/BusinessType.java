@@ -8,12 +8,12 @@ public class BusinessType {
         checkType(type);
     }
 
-    public static String inputType() {
+    public static String inputType() {//this asks the user for the type of business
         System.out.print("Enter the business type (Sole Trader (ST), Limited Company (LC), Partnership (P), Enterprise (E), PLC, Charity (C), Public Sector(PS)): ");
         return scanner.nextLine();
     }
 
-    public static void checkType(String type) {
+    public static void checkType(String type) {//this checks if the type inputted is valid
         if (type.equalsIgnoreCase("enterprise") || type.equalsIgnoreCase("e")) {
             System.out.println("Enterpirse Businesses are not supported");
             BusinessAccount.main(new String[0]);
