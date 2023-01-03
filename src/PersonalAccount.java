@@ -121,11 +121,7 @@ public class PersonalAccount {
         }
     }
 
-    private static void createAccount(Double id, double balance) {
-        PersonalAccount account = new PersonalAccount(id, balance);
-        accounts[numAccounts] = account;
-        numAccounts++;
-    }
+
     private static void printAccounts() {
         for (int i = 0; i < numAccounts; i++) {
             PersonalAccount account = accounts[i];

@@ -88,8 +88,42 @@ public class BusinessAccount {
             case 1:
                 System.out.println("Input Business name:");
                 BusinessName = scanner.next();
-                if (BusinessCreate.getBusinessInfo(BusinessName) == null){
-                    System.out.println("Business not registered");
+                String[] values = BusinessCreate.getBusinessInfo(BusinessName);
+
+                if (values[2].equals(BusinessName)){
+                    System.out.println("Business found");
+                    String Businessid = values[0];
+                    boolean find = findAccount(Integer.toString(UserID));
+                    if(find == true){
+                        System.out.println("User already has an Business account");
+                        main(new String[0]);
+                    }
+                    else{
+                        System.out.print("Enter the balance: ");
+                        double balance = scanner.nextDouble();
+                        if (balance < 1) {
+                            System.out.println("User cannot create an account with less than $1");
+                        } else {
+                            try (BufferedReader br = new BufferedReader(new FileReader("BusinessAccounts.csv"))) {
+                                String line;
+                                while ((line = br.readLine()) != null) {
+                                    String[] values2 = line.split(",");
+                                    String idCSV = values2[0];
+                                    BusinessAccountid = Integer.parseInt(idCSV) + 1;
+                                }
+                            } catch (IOException e) {
+                                BusinessAccountid = 1;
+                            }
+                            saveToCSV("BusinessAccounts.csv",BusinessAccountid, Integer.parseInt(Businessid), UserID, balance);
+                            System.out.println("Business Account Created.");
+                        }
+                        Menu.main(new String[0]);
+                    }
+
+
+                }
+                else {
+                    System.out.println("Business not found");
                     new BusinessCreate();
                 }
 
@@ -98,21 +132,8 @@ public class BusinessAccount {
                 BusinessName = BusinessCreate.getLastBusiness();
                 break;
         }
-
-        String[] CurrentBusiness = BusinessCreate.getBusinessInfo(BusinessName);
-        String Businessid = CurrentBusiness[0];
-
-
-        System.out.print("Enter the balance: ");
-        double balance = scanner.nextDouble();
-        if (balance < 1) {
-            System.out.println("User cannot create an account with less than $1");
-        } else {
-            saveToCSV("BusinessAccounts.csv",BusinessAccountid, Integer.parseInt(Businessid), UserID, balance);
-            System.out.println("ISA Account Created.");
-        }
-
         Menu.main(new String[0]);
+
 
     }
 
@@ -122,7 +143,10 @@ public class BusinessAccount {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 String idCSV = values[0];
+                System.out.println(idCSV);
+                System.out.println(id);
                 if (idCSV.equals(id)) {
+                    System.out.println("true");
                     return true;
                 }
             }
@@ -144,50 +168,21 @@ public class BusinessAccount {
             e.printStackTrace();
         }
     }
-    public static void viewAccount(String id) {
-        for (int i = 0; i < numAccounts; i++) {
-            ISAAccount account = accounts[i];
-            if (account.getId().equals(id)) {
-                System.out.println("ID: " + account.getId());
-                System.out.println("Balance: " + account.getBalance());
+    public static boolean findAccount(String id) {
+        try (BufferedReader br = new BufferedReader(new FileReader("BusinessAccounts.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String userId = values[0];
+                if (userId.equals(id)) {
+                    return true;
+                }
             }
-        }
-    }
-    private static boolean idExists(String id) {
-        for (int i = 0; i < numAccounts; i++) {
-            ISAAccount account = accounts[i];
-            if (account.getId().equals(id)) {
-                return true;
-            }
+        } catch (IOException e) {
+            return false;
         }
         return false;
     }
-
-    private static void createAccount(String id, double balance, String type) {
-        ISAAccount account = new ISAAccount(id, balance);
-        accounts[numAccounts] = account;
-        numAccounts++;
-    }
-
-    private static void printAccounts() {
-        for (int i = 0; i < numAccounts; i++) {
-            ISAAccount account = accounts[i];
-            System.out.println(account.getId() + ": " + account.getBalance() + ": " + "ISA");
-        }
-    }
-
-    private static void goBack() {
-        Menu.main(new String[0]);
-    }
-
-    public static int getNumAccounts() {
-        return numAccounts;
-    }
-
-    public static ISAAccount[] getAccounts() {
-        return accounts;
-    }
-
     public String getId() {
         return id;
     }

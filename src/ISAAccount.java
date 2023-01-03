@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class BusinessAccount {
+public class ISAAccount {
     private static ISAAccount[] accounts = new ISAAccount[100];
     private static int numAccounts;
 
@@ -140,45 +140,6 @@ public class BusinessAccount {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public static void viewAccount(String id) {
-        for (int i = 0; i < numAccounts; i++) {
-            ISAAccount account = accounts[i];
-            if (account.getId().equals(id)) {
-                System.out.println("ID: " + account.getId());
-                System.out.println("Balance: " + account.getBalance());
-            }
-        }
-    }
-    private static boolean idExists(String id) {
-        for (int i = 0; i < numAccounts; i++) {
-            ISAAccount account = accounts[i];
-            if (account.getId().equals(id)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static void createAccount(String id, double balance, String type) {
-        ISAAccount account = new ISAAccount(id, balance);
-        accounts[numAccounts] = account;
-        numAccounts++;
-    }
-
-    private static void printAccounts() {
-        for (int i = 0; i < numAccounts; i++) {
-            ISAAccount account = accounts[i];
-            System.out.println(account.getId() + ": " + account.getBalance() + ": " + "ISA");
-        }
-    }
-
-    private static void goBack() {
-        Menu.main(new String[0]);
-    }
-
-    public static int getNumAccounts() {
-        return numAccounts;
     }
 
     public static ISAAccount[] getAccounts() {
