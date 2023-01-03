@@ -1,11 +1,10 @@
 import java.io.*;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ISAAccount {
+public class BusinessAccount {
     private static ISAAccount[] accounts = new ISAAccount[100];
     private static int numAccounts;
 

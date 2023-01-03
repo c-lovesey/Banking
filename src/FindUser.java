@@ -57,5 +57,22 @@ public class FindUser {
 
         return false;
     }
+    public static String findUserid(String username) {
+        try (BufferedReader br = new BufferedReader(new FileReader("users.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String usernameCSV = values[1];
+                String id = values[0];
+                if (usernameCSV.equals(username)) {
+                    return id;
+                }
+            }
+        } catch (IOException e) {
+            return null;
+        }
+
+        return null;
+    }
 
 }

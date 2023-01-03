@@ -5,6 +5,7 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("1. Create account");
+        System.out.println("2. Register Business");
         System.out.println("2. View account");
         System.out.println("3. Direct debit ");
         System.out.println("4. Standing order");
@@ -18,16 +19,19 @@ public class Menu {
                     CreateAccount.main(new String[0]);
                     break;
                 case 2:
-                    ViewAccount.main(new String[0]);
+                    BusinessCreate.main(new String[0]);
                     break;
                 case 3:
-                    DirectDebit.main(new String[0]);
+                    ViewAccount.main(new String[0]);
                     break;
                 case 4:
+                    DirectDebit.main(new String[0]);
+                    break;
+                case 5:
                     StandingOrder.main(new String[0]);
                     break;
 
-                case 5:
+                case 6:
                     System.exit(0);
                     break;
                 default:
