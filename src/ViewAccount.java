@@ -85,7 +85,7 @@ public class ViewAccount {
         }
     }
 
-    public static String findAccount(String id, String filename) {
+    public static String findAccount(String id, String filename) {//loops through csv file for an id that matches and prints all values stored
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {

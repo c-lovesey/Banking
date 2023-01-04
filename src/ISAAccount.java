@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ISAAccount {
+public class ISAAccount {//business account is the most recent account creation class i created so it has more validation that may need to be added here
     private static ISAAccount[] accounts = new ISAAccount[100];//same array of objects that isnt ever used
     private static int numAccounts;
 

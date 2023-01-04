@@ -14,8 +14,7 @@ public class User {
     private String lastName;
     private String address;
     private LocalDate dateOfBirth;
-
-    public User(String username, String firstName, String lastName, LocalDate dateOfBirth, String address) {
+    public User(String username, String firstName, String lastName, LocalDate dateOfBirth, String address) {//reads the users file
         List<String> idList = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader("users.csv"))) {
@@ -31,7 +30,7 @@ public class User {
         if (idList.isEmpty()) {
             this.userId = "1";
         } else {
-            int lastIdInt = Integer.parseInt(idList.get(idList.size() - 1)) + 1;
+            int lastIdInt = Integer.parseInt(idList.get(idList.size() - 1)) + 1;//sets the users id
             this.userId = Integer.toString(lastIdInt);
         }
 
@@ -43,7 +42,7 @@ public class User {
 
     }
 
-    public void saveToCSV(String fileName) {
+    public void saveToCSV(String fileName) {//saves to users.csv
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
 

@@ -19,12 +19,12 @@ public class PersonalAccount {
 
     public static void main(String[] args) {
         int id = 0;
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);//asks how to search for user
         System.out.println("Personal account Creation");
         System.out.println("1. Search with User ID");
         System.out.println("2. Search with User details");
         int choice = scanner.nextInt();
-        if (choice == 2) {
+        if (choice == 2) {//asks for user information
             System.out.print("Enter Username: ");
             String Username = scanner.next();
             System.out.print("Enter Firstname: ");
@@ -39,7 +39,7 @@ public class PersonalAccount {
             int birthDay = scanner.nextInt();
             System.out.print("Enter Postcode: ");
             String address = scanner.next();
-            if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
+            if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {//if user not in users.csv file creates a new user
                 System.out.println("User not found do you wish to create a new user with this information?");
 
                 System.out.println("Username: " + Username);
@@ -52,7 +52,7 @@ public class PersonalAccount {
                 System.out.println("Account Created");
                 System.out.println("");
 
-                try (BufferedReader br = new BufferedReader(new FileReader("PersonalAccounts.csv"))) {
+                try (BufferedReader br = new BufferedReader(new FileReader("PersonalAccounts.csv"))) {//gets the id value of last in csv file and adds 1
                     String line;
                     while ((line = br.readLine()) != null) {
                         String[] values = line.split(",");
@@ -60,23 +60,23 @@ public class PersonalAccount {
                         id = Integer.parseInt(IDCSV) + 1;
                     }
                 } catch (IOException e) {
-                    id = 1;
+                    id = 1;//if no file sets id to 1
                 }
             } else {
-                id = Integer.parseInt(FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address));
+                id = Integer.parseInt(FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address));//if the user is in the csv file it gets the id
             }
         } else {
-            System.out.print("Enter ID: ");
+            System.out.print("Enter ID: ");//asks user for id
             id = scanner.nextInt();
         }
 
 
-        System.out.print("Enter the balance: ");
+        System.out.print("Enter the balance: ");//checks if balance is valid
         double balance = scanner.nextDouble();
         if (balance < 1) {
             System.out.println("User cannot create an account with less than $1");
         } else {
-            String PersonalID = createAccount(id, balance);
+            String PersonalID = createAccount(id, balance);//if balance is > 1 saves account to csv file
             saveToCSV("PersonalAccounts.csv", PersonalID, id, balance);
             System.out.println("Personal Account Created.");
         }
@@ -86,30 +86,30 @@ public class PersonalAccount {
     }
 
 
-    public static String createAccount(int id, double balance) {
+    public static String createAccount(int id, double balance) {//this class gets the id value this one is different as instead of just reading the last value and adding one it creates a list and adds ids to them and gets the length of the list
         List<String> idList = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader("PersonalAccounts.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                idList.add(values[0]);
+                idList.add(values[0]);//adds ids to list
             }
         } catch (IOException e) {
 
         }
         String PersonalId = "";
-        if (idList.isEmpty()) {
+        if (idList.isEmpty()) {//if no list set id to 1
             PersonalId = "1";
         } else {
             int lastIdInt = Integer.parseInt(idList.get(idList.size() - 1)) + 1;
-            PersonalId = Integer.toString(lastIdInt);
+            PersonalId = Integer.toString(lastIdInt);//gets the new id
         }
-        return PersonalId;
+        return PersonalId;//returns the new id
 
     }
 
-    public static void saveToCSV(String fileName, String PersonalID, int id, double balance) {
+    public static void saveToCSV(String fileName, String PersonalID, int id, double balance) {//saves account info to csv file
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
 
@@ -122,7 +122,7 @@ public class PersonalAccount {
     }
 
 
-    private static void printAccounts() {
+    private static void printAccounts() {//old code which isnt used
         for (int i = 0; i < numAccounts; i++) {
             PersonalAccount account = accounts[i];
             System.out.println(account.getId() + ": " + account.getBalance());
