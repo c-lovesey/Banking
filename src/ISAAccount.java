@@ -64,7 +64,7 @@ public class ISAAccount {//business account is the most recent account creation 
                 }
             } else {//checks if they already have an isa account
                 String New = FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                if(findID(New) == true){
+                if (findID(New) == true) {
                     System.out.println("User already has an ISA account");
                     main(new String[0]);
                 }
@@ -75,14 +75,13 @@ public class ISAAccount {//business account is the most recent account creation 
         }
 
 
-
         System.out.print("Enter the balance: ");
         double balance = scanner.nextDouble();
         if (balance < 1) {
             System.out.println("User cannot create an account with less than $1");
         } else {
             String ISAID = createAccount(id, balance);//creates a new account
-            saveToCSV("ISAAccounts.csv", ISAID, id, balance);//saves account
+            saveToCSV("ISAAccounts.csv", ISAID, id, balance,0,balance,0);//saves account
             System.out.println("ISA Account Created.");
         }
 
@@ -130,17 +129,75 @@ public class ISAAccount {//business account is the most recent account creation 
 
     }
 
-    public static void saveToCSV(String fileName, String ISAID, int id, double balance) {
+    public static void saveToCSV(String fileName, String ISAID, int id, double balance, int count, double total, double average) {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
 
-            String line = ISAID + "," + id + "," + balance + "," + "ISA";
+            String line = ISAID + "," + id + "," + balance + "," + "ISA" + count + "," + total + "," + average;
             bw.write(line);
             bw.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public void updateAverage(String isaid, double sum, int count) {
+        try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String idCSV = values[0];
+                int balance = Integer.parseInt(values[2]);
+                if (idCSV.equals(isaid)) {
+                    double total = sum + balance;
+                    count++;
+                    double average = total / count;
+                    List<String> list = new ArrayList<>();
+
+                    list.add(values[0]);
+                    list.add(values[1]);
+                    list.add(values[2]);
+                    list.add(values[3]);
+                    list.add(String.valueOf(count));
+                    list.add(values[(int) total]);
+                    list.add(values[(int) average]);
+
+                    updateLineById("accounts.csv", values[0], list);
+                }
+            }
+        } catch (IOException e) {
+
+        }
+    }
+
+    public void updateLineById(String filePath, String id, List<String> newValues) throws IOException {
+        // Read the CSV file
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        StringBuilder fileContent = new StringBuilder();
+
+        // Iterate through the lines of the CSV file
+        while ((line = reader.readLine()) != null) {
+            // Split the line into fields
+            String[] fields = line.split(",");
+
+            // Check if the ID field matches the ID we are looking for
+            if (fields[0].equals(id)) {
+                // Replace the values of the line with the new values
+                fileContent.append(String.join(",", newValues)).append("\n");
+            } else {
+                // Keep the original line
+                fileContent.append(line).append("\n");
+            }
+        }
+        reader.close();
+
+        // Write the updated file content to the CSV file
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+        writer.write(fileContent.toString());
+        writer.close();
+    }
+
 
     public static ISAAccount[] getAccounts() {
         return accounts;
