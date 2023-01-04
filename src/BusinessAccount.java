@@ -1,5 +1,8 @@
 import java.io.*;
 import java.time.LocalDate;
+import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class BusinessAccount {
@@ -128,7 +131,7 @@ public class BusinessAccount {
                             } catch (IOException e) {
                                 BusinessAccountid = 1;//if file doesnt exist set id to 1
                             }
-                            saveToCSV("BusinessAccounts.csv",BusinessAccountid, Integer.parseInt(Businessid), UserID, balance);//save to csv file passes in the account id, the business id, the user id and the balance
+                            saveToCSV("BusinessAccounts.csv",BusinessAccountid, Integer.parseInt(Businessid), UserID, balance, String.valueOf(Year.now()),"0");//save to csv file passes in the account id, the business id, the user id and the balance
                             System.out.println("Business Account Created.");
                         }
                         Menu.main(new String[0]);//fix this :)
@@ -171,11 +174,73 @@ public class BusinessAccount {
         return false;
     }
 
-    public static void saveToCSV(String fileName, int id, int BusinessID,int UserID, double balance) {
+    public void Charges(String BAid, double sum, int count) {
+        try (BufferedReader br = new BufferedReader(new FileReader("BusinessAccounts.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String idCSV = values[0];
+                int balance = Integer.parseInt(values[3]);//gets balance
+                if (idCSV.equals(BAid)) {
+                    Year CurrentYear = Year.now();//gets current year
+                    int charges = ((Integer.parseInt(String.valueOf(values[4]))))+1;//gets how many charges have been applied
+                    int years = ((Integer.parseInt(String.valueOf(CurrentYear))) - (Integer.parseInt(String.valueOf(values[1])))); //gets the number of years since account creation
+                    if (years > charges) { //gets the difference between them
+                        int num = (years - charges);
+                        balance = balance - (num  * 120);//subtracts from the balance
+                        List<String> list = new ArrayList<>();
+                        list.add(values[0]);
+                        list.add(values[1]);
+                        list.add(values[2]);
+                        list.add(String.valueOf(balance));
+                        list.add(values[3]);
+                        list.add(String.valueOf(charges + num));
+
+
+                        updateLineById("BusinessAccounts.csv", values[0], list);
+                    }
+                }
+            }
+
+        }catch (IOException e) {
+
+        }
+    }
+    public void updateLineById(String filePath, String id, List<String> newValues) throws IOException {
+        // Read the CSV file
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            StringBuilder fileContent = new StringBuilder();
+
+            // Iterate through the lines of the CSV file
+            while ((line = reader.readLine()) != null) {
+                // Split the line into fields
+                String[] fields = line.split(",");
+
+                // Check if the ID field matches the ID we are looking for
+                if (fields[0].equals(id)) {
+                    // Replace the values of the line with the new values
+                    fileContent.append(String.join(",", newValues)).append("\n");
+                } else {
+                    // Keep the original line
+                    fileContent.append(line).append("\n");
+                }
+            }
+            reader.close();
+
+            // Write the updated file content to the CSV file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            writer.write(fileContent.toString());
+            writer.close();
+        } catch (IOException e) {
+        }
+    }
+    public static void saveToCSV(String fileName, int id, int BusinessID,int UserID, double balance, String yearCreated, String charges) {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {//saves csv file
 
-            String line = id + "," + BusinessID + "," + UserID + "," + balance;
+            String line = id + "," + BusinessID + "," + UserID + "," + balance + "," + yearCreated + "," + charges;
             bw.write(line);
             bw.newLine();
         } catch (IOException e) {

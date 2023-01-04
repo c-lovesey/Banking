@@ -140,7 +140,34 @@ public class ISAAccount {//business account is the most recent account creation 
             e.printStackTrace();
         }
     }
+    public void calculateAPR(String isaid){
+        try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String idCSV = values[0];
+                if (idCSV.equals(isaid)) {
+                    double APR = (Integer.parseInt(values[6]) * (0.0275));
+                    double balance = Integer.parseInt(values[2] + APR);
+                    List<String> list = new ArrayList<>();
 
+                    list.add(values[0]);
+                    list.add(String.valueOf(balance));
+                    list.add(values[2]);
+                    list.add(values[3]);
+                    list.add("0");
+                    list.add("0");
+                    list.add(String.valueOf(balance));
+
+                    updateLineById("accounts.csv", values[0], list);
+                }
+            }
+        }
+        catch (IOException e) {
+
+        }
+
+    }
     public void updateAverage(String isaid, double sum, int count) {
         try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {
             String line;
@@ -162,7 +189,7 @@ public class ISAAccount {//business account is the most recent account creation 
                     list.add(values[(int) total]);
                     list.add(values[(int) average]);
 
-                    updateLineById("accounts.csv", values[0], list);
+                    updateLineById("ISAAccounts.csv", values[0], list);
                 }
             }
         } catch (IOException e) {
@@ -172,30 +199,33 @@ public class ISAAccount {//business account is the most recent account creation 
 
     public void updateLineById(String filePath, String id, List<String> newValues) throws IOException {
         // Read the CSV file
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        String line;
-        StringBuilder fileContent = new StringBuilder();
 
-        // Iterate through the lines of the CSV file
-        while ((line = reader.readLine()) != null) {
-            // Split the line into fields
-            String[] fields = line.split(",");
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            StringBuilder fileContent = new StringBuilder();
 
-            // Check if the ID field matches the ID we are looking for
-            if (fields[0].equals(id)) {
-                // Replace the values of the line with the new values
-                fileContent.append(String.join(",", newValues)).append("\n");
-            } else {
-                // Keep the original line
-                fileContent.append(line).append("\n");
+            // Iterate through the lines of the CSV file
+            while ((line = reader.readLine()) != null) {
+                // Split the line into fields
+                String[] fields = line.split(",");
+
+                // Check if the ID field matches the ID we are looking for
+                if (fields[0].equals(id)) {
+                    // Replace the values of the line with the new values
+                    fileContent.append(String.join(",", newValues)).append("\n");
+                } else {
+                    // Keep the original line
+                    fileContent.append(line).append("\n");
+                }
             }
-        }
-        reader.close();
+            reader.close();
 
-        // Write the updated file content to the CSV file
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-        writer.write(fileContent.toString());
-        writer.close();
+            // Write the updated file content to the CSV file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            writer.write(fileContent.toString());
+            writer.close();
+        } catch (IOException e) {
+        }
     }
 
 
