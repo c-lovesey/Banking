@@ -75,7 +75,7 @@ public class FindUser {
         return null; //if user not in file returns null
     }
 
-    public static String findByID(String uid) {//finds users id
+    public static String[] findByID(String uid) {//finds users id
         try (BufferedReader br = new BufferedReader(new FileReader("PersonalAccounts.csv"))) {//tries to open csv file
             String line;
             while ((line = br.readLine()) != null) {//loops through file
@@ -83,7 +83,7 @@ public class FindUser {
                 String usernameCSV = values[1];
                 String id = values[0];
                 if (id.equals(uid)) {//if user in file returns id
-                    return values[]
+                    return values;
                 }
             }
         } catch (IOException e) {

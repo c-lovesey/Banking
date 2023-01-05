@@ -197,7 +197,7 @@ public class ISAAccount {//business account is the most recent account creation 
         }
     }
 
-    public void updateLineById(String filePath, String id, List<String> newValues) throws IOException {
+    public static void updateLineById(String filePath, String id, List<String> newValues) throws IOException {
         // Read the CSV file
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
