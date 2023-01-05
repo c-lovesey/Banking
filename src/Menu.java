@@ -6,10 +6,10 @@ public class Menu {//program launches from here
         //initialises scanner to get user input on what to do
         System.out.println("1. Create account");
         System.out.println("2. Register Business");
-        System.out.println("2. View account");
-        System.out.println("3. Direct debit ");
-        System.out.println("4. Standing order");
-        System.out.println("5. Quit");
+        System.out.println("3. View account");
+        System.out.println("4. Direct debit ");
+        System.out.println("5. Standing order");
+        System.out.println("6. Quit");
         System.out.print("Enter your choice: ");
         int choice = 0;
         try {

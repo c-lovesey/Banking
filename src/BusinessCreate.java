@@ -8,7 +8,7 @@ public class BusinessCreate {//adds a business to
         //gets usrr input
         System.out.println("Register Business");
         System.out.print("Enter name of Business: ");
-        String BusinessName = scanner.next();
+        String BusinessName = scanner.nextLine();
         String type = BusinessType.inputType();
         BusinessType.checkType(type);//checks if the type inputted is valid
         int id = 1;
@@ -23,7 +23,7 @@ public class BusinessCreate {//adds a business to
             id = 1; //if no csv file set to 1
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("businesses.csv", true))){//checks for csv file
-            if (getBusinessInfo(BusinessName).equals(null)) {//if business not in file saves it to file
+            if (getBusinessInfo(BusinessName)[0].equals("null")) {//if business not in file saves it to file  getBusinessInfo
                 saveToCSV("businesses.csv", id, BusinessName, type);
                 Menu.main(new String[0]);
             } else {//else says no
@@ -48,6 +48,7 @@ public class BusinessCreate {//adds a business to
         }
     }
     public static String[] getBusinessInfo(String name) {//gets the id type and name of business given a name
+
         try (BufferedReader br = new BufferedReader(new FileReader("businesses.csv"))) {
             String line;
 
@@ -68,10 +69,9 @@ public class BusinessCreate {//adds a business to
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Csv file not found");;
         }
-
-        return null;
+        return new String[]{"null"};
     }
 
     public static String getLastBusiness() {//gets the last business in file, forget why i added this

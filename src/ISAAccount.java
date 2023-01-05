@@ -26,11 +26,11 @@ public class ISAAccount {//business account is the most recent account creation 
         int choice = scanner.nextInt();
         if (choice == 2) {//same user input probs do need to put this in a method
             System.out.print("Enter Username: ");
-            String Username = scanner.next();
+            String Username = scanner.nextLine();
             System.out.print("Enter Firstname: ");
-            String Firstname = scanner.next();
+            String Firstname = scanner.nextLine();
             System.out.print("Enter LastName: ");
-            String Lastname = scanner.next();
+            String Lastname = scanner.nextLine();
             System.out.print("Enter Year of Birth: ");
             int birthYear = scanner.nextInt();
             System.out.print("Enter month of Birth: ");
@@ -38,7 +38,7 @@ public class ISAAccount {//business account is the most recent account creation 
             System.out.print("Enter day of Birth: ");
             int birthDay = scanner.nextInt();
             System.out.print("Enter Postcode: ");
-            String address = scanner.next();
+            String address = scanner.nextLine();
             if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
                 System.out.println("User not found do you wish to create a new user with this information?");
 
