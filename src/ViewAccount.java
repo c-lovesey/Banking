@@ -10,30 +10,24 @@ public class ViewAccount {
 
         System.out.print("Enter the account type (personal (p), ISA, business (b)): ");
         String type = scanner.nextLine();
-
+        //add a catch for type
         System.out.println("1. Search with User ID");
         System.out.println("2. Search with User details");
         int choice = scanner.nextInt();
         if (choice == 1) {
 
             System.out.print("Enter the ID: ");
-            String id = scanner.nextLine();
-            switch (type) {
+            String id = scanner.next();
+            switch (type.toLowerCase()) {
                 case "personal":
+                case "p":
                     findAccount(id, "PersonalAccounts.csv");
                     break;
-                case "p":
-                    findAccount(id,"PersonalAccounts.csv");
-                    break;
-                case "ISA":
-                    findAccount(id,"ISAAccounts.csv");
-                    break;
                 case "isa":
+                case "i":
                     findAccount(id,"ISAAccounts.csv");
                     break;
                 case "business":
-                    findAccount(id,"BusinessAccounts.csv");
-                    break;
                 case "b":
                     findAccount(id,"BusinessAccounts.csv");
                     break;
@@ -58,22 +52,16 @@ public class ViewAccount {
             if (Uid == null) {
                 System.out.println("This user does not exist");
             } else {
-                switch (type) {
+                switch (type.toLowerCase()) {
                     case "personal":
+                    case "p":
                         findAccount(Uid, "PersonalAccounts.csv");
                         break;
-                    case "p":
-                        findAccount(Uid,"PersonalAccounts.csv");
-                        break;
-                    case "ISA":
-                        findAccount(Uid,"ISAAccounts.csv");
-                        break;
                     case "isa":
+                    case "i":
                         findAccount(Uid,"ISAAccounts.csv");
                         break;
                     case "business":
-                        findAccount(Uid,"BusinessAccounts.csv");
-                        break;
                     case "b":
                         findAccount(Uid,"BusinessAccounts.csv");
                         break;
@@ -85,7 +73,8 @@ public class ViewAccount {
         }
     }
 
-    public static String findAccount(String id, String filename) {//loops through csv file for an id that matches and prints all values stored
+    public static void findAccount(String id, String filename) {//loops through csv file for an id that matches and prints all values stored
+
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -94,13 +83,14 @@ public class ViewAccount {
                 if (Aid.equals(id)) {
                     for (int i = 0; i < line.split(",").length; i++) {
                         System.out.println(values[i]);
+
                     }
+                    return;
                 }
             }
         } catch (IOException e) {
-            return null;
+            return;
         }
-
-        return null;
+        System.out.println("Account not found");
     }
 }

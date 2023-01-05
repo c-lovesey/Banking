@@ -17,6 +17,8 @@ public class DirectDebit {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+
+
         System.out.print("Enter the ID: ");
         String id = scanner.nextLine();
 
