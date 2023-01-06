@@ -47,10 +47,11 @@ public class PersonalAccount {
                     System.out.print("User not found do you wish to create a new user with this information?");
                     String CreateNew = scanner.next();
                     boolean loop = true;
-                    while (loop = true) {
+                    while (loop == true) {
                         switch (CreateNew.toLowerCase()) {
                             case "yes":
                             case "y":
+                                loop = false;
                                 System.out.println("Username: " + Username);
                                 System.out.println("Firstname: " + Firstname);
                                 System.out.println("Lastname: " + Lastname);
@@ -71,7 +72,7 @@ public class PersonalAccount {
                                 } catch (IOException e) {
                                     id = 1;//if no file sets id to 1
                                 }
-                                loop = false;
+
                                 break;
 
                             case "no":
@@ -87,11 +88,14 @@ public class PersonalAccount {
                 } else {
                     id = Integer.parseInt(FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address));//if the user is in the csv file it gets the id
                 }
+                break;
             case 1:
                 System.out.print("Enter ID: ");//asks user for id
                 id = scanner.nextInt();
+                break;
             case 3:
                 Main.main(new String[0]);
+                break;
         }
 
 
@@ -146,7 +150,7 @@ public class PersonalAccount {
         }
     }
 
-
+    //these classes are unused
     private static void printAccounts() {//old code which isnt used
         for (int i = 0; i < numAccounts; i++) {
             PersonalAccount account = accounts[i];

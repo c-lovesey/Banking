@@ -36,113 +36,147 @@ public class BusinessAccount {
         int choice = scanner.nextInt();
         switch (choice) {
             case 1:
-            //if option 1 is selected asks for user id input
-            System.out.print("Enter User ID: ");
-            userId = scanner.nextInt();
-            break;
+                //if option 1 is selected asks for user id input
+                System.out.print("Enter User ID: ");
+                userId = scanner.nextInt();
+                break;
 
             case 2:
-            //this part can be sent out to the user class but that class needs to return values so the account can be created
-            System.out.print("Enter username: ");
-            String username = scanner.next();
-            System.out.print("Enter first name: ");
-            String firstName = scanner.next();
-            System.out.print("Enter last name: ");
-            String lastName = scanner.next();
-            System.out.print("Enter Year of birth: ");
-            int birthYear = scanner.nextInt();
-            System.out.print("Enter month of birth: ");
-            int birthMonth = scanner.nextInt();
-            System.out.print("Enter day of birth: ");
-            int birthDay = scanner.nextInt();
-            System.out.print("Enter postcode: ");
-            String address = scanner.next();
-            String Userid = null;
-            // conditional statement checking if user is found in the file
-                boolean loop = true;
-                while (loop) {
-                    try {
-                        Userid = FindUser.findUser(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                        loop = false;
-                    } catch (Exception e) {
-                        System.out.println("Invalid Input");
-                        System.out.println("");
-                        System.out.print("Enter username: ");
-                        username = scanner.next();
-                        System.out.print("Enter first name: ");
-                        firstName = scanner.next();
-                        System.out.print("Enter last name: ");
-                        lastName = scanner.next();
-                        System.out.print("Enter Year of birth: ");
-                        birthYear = scanner.nextInt();
-                        System.out.print("Enter month of birth: ");
-                        birthMonth = scanner.nextInt();
-                        System.out.print("Enter day of birth: ");
-                        birthDay = scanner.nextInt();
-                        System.out.print("Enter postcode: ");
-                        address = scanner.next();
-                    }
-                }
-            if (Userid == null) {
-                // if user isn't in the file it provides option to add a new user
-                System.out.println("User not found. Would you like to create a new user with this information?");
-                String CreateNew = scanner.next();
-                loop = true;
-                while (loop) {
-                    switch (CreateNew.toLowerCase()) {
-                        case "yes":
-                        case "y":
-                            System.out.println("Username: " + username);
-                            System.out.println("Firstname: " + firstName);
-                            System.out.println("Lastname: " + lastName);
-                            System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
-                            System.out.println("Address: " + address);
-                            //creates the user
-                            User user = new User(username, firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                            //saves the user
-                            user.saveToCSV("users.csv");
-                            System.out.println("Account Created");
-                            //gets the id of the created user (really weird and bad way to do this if we can get it as a return just put it here
-                            userId = Integer.parseInt(FindUser.findUserid(username));
-                            System.out.println("");
-                            //tries to open csv file
-                            try (BufferedReader br = new BufferedReader(new FileReader("BusinessAccounts.csv"))) {
-                                String line;
-                                while ((line = br.readLine()) != null) {//loops through file
-                                    String[] values = line.split(",");//splits it by comma
-                                    String idCSV = values[0];//gets id value
-                                    businessAccountId = Integer.parseInt(idCSV) + 1;//adds 1
-                                    //this just gets the last id value in the file and adds one, can create a variable which just gets the length of the accounts array if done properly
+                //this part can be sent out to the user class but that class needs to return values so the account can be created
+                System.out.print("Enter username: ");
+                String username = scanner.next();
+                System.out.print("Enter first name: ");
+                String Firstname = scanner.next();
+                System.out.print("Enter last name: ");
+                String Lastname = scanner.next();
+                System.out.print("Enter Year of birth: ");
+                int birthYear = scanner.nextInt();
+                System.out.print("Enter month of birth: ");
+                int birthMonth = scanner.nextInt();
+                System.out.print("Enter day of birth: ");
+                int birthDay = scanner.nextInt();
+                System.out.print("Enter postcode: ");
+                String address = scanner.next();
+                String Userid = null;
+                // conditional statement checking if user is found in the file
+                if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {//if user not in users.csv file creates a new user
+                    System.out.print("User not found do you wish to create a new user with this information?");
+                    String CreateNew = scanner.next();
+                    boolean loop = true;
+                    while (loop == true) {
+                        switch (CreateNew.toLowerCase()) {
+                            case "yes":
+                            case "y":
+                                loop = false;
+                                System.out.println("Invalid Input");
+                                System.out.println("");
+                                System.out.print("Enter username: ");
+                                username = scanner.next();
+                                System.out.print("Enter first name: ");
+                                Firstname = scanner.next();
+                                System.out.print("Enter last name: ");
+                                Lastname = scanner.next();
+                                System.out.print("Enter Year of birth: ");
+                                birthYear = scanner.nextInt();
+                                System.out.print("Enter month of birth: ");
+                                birthMonth = scanner.nextInt();
+                                System.out.print("Enter day of birth: ");
+                                birthDay = scanner.nextInt();
+                                System.out.print("Enter postcode: ");
+                                address = scanner.next();
+                                try (BufferedReader br = new BufferedReader(new FileReader("BusinessAccounts.csv"))) {//gets the id value of last in csv file and adds 1
+                                    String line;
+                                    while ((line = br.readLine()) != null) {
+                                        String[] values = line.split(",");
+                                        String IDCSV = values[0];
+                                        id = Integer.parseInt(IDCSV) + 1;
+                                    }
+                                } catch (IOException e) {
+                                    id = 1;//if no file sets id to 1
                                 }
-                            } catch (IOException e) {
-                                businessAccountId = 1;//if there is no csv file sets the id to 1
-                            }
-                            loop = false;
-                            break;
-                        case "no":
-                        case "n":
-                            main(new String[0]);
-                            break;
 
-                        default:
-                            System.out.println("Invalid input please type yes or no.");
+                                break;
+
+                            case "no":
+                            case "n":
+                                main(new String[0]);
+                                break;
+
+                            default:
+                                System.out.println("Invalid input please type yes or no.");
+                                break;
+                        }
+
+                    }
+                } else {
+                    //checks if user is in file
+                    System.out.println("User found");
+                    String New = FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
+                    if (findID(New) == true) {
+                        //need to add a check type here//old comment cant remember what i meant
+                        System.out.println("User already has an account");
+
                     }
                 }
+                break;
+
+//            if (Userid == null) {
+//                // if user isn't in the file it provides option to add a new user
+//                System.out.print("User not found. Would you like to create a new user with this information?");
+//                String CreateNew = scanner.next();
+//                loop = true;
+//                while (loop) {
+//                    switch (CreateNew.toLowerCase()) {
+//                        case "yes":
+//                        case "y":
+//                            loop = false;
+//                            System.out.println("Username: " + username);
+//                            System.out.println("Firstname: " + Firstname);
+//                            System.out.println("Lastname: " + Lastname);
+//                            System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
+//                            System.out.println("Address: " + address);
+//                            //creates the user
+//                            User user = new User(username, Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
+//                            //saves the user
+//                            user.saveToCSV("users.csv");
+//                            System.out.println("Account Created");
+//                            System.out.println("");
+//                            //gets the id of the created user (really weird and bad way to do this if we can get it as a return just put it here
+//                            userId = Integer.parseInt(FindUser.findUserid(username));
+//                            System.out.println("");
+//                            //tries to open csv file
+//                            try (BufferedReader br = new BufferedReader(new FileReader("BusinessAccounts.csv"))) {
+//                                String line;
+//                                while ((line = br.readLine()) != null) {//loops through file
+//                                    String[] values = line.split(",");//splits it by comma
+//                                    String idCSV = values[0];//gets id value
+//                                    businessAccountId = Integer.parseInt(idCSV) + 1;//adds 1
+//                                    //this just gets the last id value in the file and adds one, can create a variable which just gets the length of the accounts array if done properly
+//                                }
+//                            } catch (IOException e) {
+//                                businessAccountId = 1;//if there is no csv file sets the id to 1
+//                            }
+//
+//                            break;
+//                        case "no":
+//                        case "n":
+//                            main(new String[0]);
+//                            break;
+//
+//                        default:
+//                            System.out.println("Invalid input please type yes or no.");
+//                            break;
+//                    }
+//                }
 
 
-
-            } else {
-                //checks if user is in file
-                String New = FindUser.findUser(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                if(findID(New) == true){
-                    //need to add a check type here//old comment cant remember what i meant
-                    System.out.println("User already has an account");
-
-                }
-            }
             case 3:
                 Main.main(new String[0]);
+                break;
+            default:
+                System.out.println("Invalid input please type yes or no.");
         }
+
         //after user has been inputted asks for business to be tied to account
         System.out.println("Register Business");
         System.out.println("1. Search with Business name");
@@ -154,21 +188,34 @@ public class BusinessAccount {
         switch (choice) {
             case 1:
                 //searches the business csv file the business for the business
-                System.out.println("Input Business name:");
+                System.out.print("Input Business name:");
                 businessName = scanner.next();
-                String[] values = Main.getBusinessInfo(businessName);
+                String[] values = null;
+                boolean found = false;
+                try (BufferedReader br = new BufferedReader(new FileReader("Businesses.csv"))) {//gets the id value of last in csv file and adds 1
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        values = line.split(",");
+                        String name = values[1];
+                        if (name.equals(businessName)){
+                            found = true;
+                        }
 
-                if (values[2].equals(businessName)){
+                    }
+                } catch (IOException e) {
+                    found = false;
+                }
+
+                if (found == true) {
                     //if the business is found it gets the id of the business
                     System.out.println("Business found");
                     int businessId = Integer.parseInt(values[0]);
                     boolean find = findAccount(Integer.toString(userId));
-                    if(find){//checks if user already has a business account
+                    if (find) {//checks if user already has a business account
                         System.out.println("User already has an business account.");
                         //this needs to have another check to see if the business has an account associated to it
                         main(new String[0]);
-                    }
-                    else{
+                    } else {
                         //if the user doesn't have a business account asks for balance
                         System.out.print("Enter the balance: ");
                         double balance = scanner.nextDouble();
@@ -186,15 +233,14 @@ public class BusinessAccount {
                             } catch (IOException e) {
                                 businessAccountId = 1; // if file doesn't exist, set id to 1 as it'll be the first record added to the file
                             }
-                            saveToCSV("BusinessAccounts.csv",businessAccountId, businessId, userId, balance, String.valueOf(Year.now()),"0");
+                            saveToCSV("BusinessAccounts.csv", businessAccountId, businessId, userId, balance, String.valueOf(Year.now()), "0");
                             System.out.println("Business account Created.");
                         }
                         Main.main(new String[0]);//fix this :)
                     }
 
 
-                }
-                else {
+                } else {
                     // if business isn't found creates one, need to work on this as i think program just closes after call
                     System.out.println("Business not found");
                     BusinessCreate.main(new String[0]);
