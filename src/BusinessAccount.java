@@ -190,9 +190,23 @@ public class BusinessAccount {
                 //searches the business csv file the business for the business
                 System.out.print("Input Business name:");
                 businessName = scanner.next();
-                String[] values = Main.getBusinessInfo(businessName);
+                String[] values = null;
+                boolean found = false;
+                try (BufferedReader br = new BufferedReader(new FileReader("Businesses.csv"))) {//gets the id value of last in csv file and adds 1
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        values = line.split(",");
+                        String name = values[1];
+                        if (name.equals(businessName)){
+                            found = true;
+                        }
 
-                if (values[2].equals(businessName)) {
+                    }
+                } catch (IOException e) {
+                    found = false;
+                }
+
+                if (found == true) {
                     //if the business is found it gets the id of the business
                     System.out.println("Business found");
                     int businessId = Integer.parseInt(values[0]);
