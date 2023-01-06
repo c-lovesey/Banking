@@ -13,9 +13,10 @@ public class BusinessType {
         return scanner.nextLine();
     }
 
-    public static void checkType(String type) {//this checks if the type inputted is valid
+    public static void checkType(String type) {
+        // validation for business types
         if (type.equalsIgnoreCase("enterprise") || type.equalsIgnoreCase("e")) {
-            System.out.println("Enterpirse Businesses are not supported");
+            System.out.println("Enterprises are not supported");
             BusinessAccount.main(new String[0]);
         } else if (type.equalsIgnoreCase("plc")) {
             System.out.println("Public Limited Companies are not supported");
@@ -24,7 +25,7 @@ public class BusinessType {
             System.out.println("Charities are not supported");
             BusinessAccount.main(new String[0]);
         } else if (type.equalsIgnoreCase("public sector") || type.equalsIgnoreCase("ps")) {
-            System.out.println("Public Sector Businesses are not supported");
+            System.out.println("Public Sector businesses are not supported");
             BusinessAccount.main(new String[0]);
         } else if (type.equalsIgnoreCase("Partnership") || type.equalsIgnoreCase("p")) {
                 System.out.println("Partnerships are supported");
@@ -33,7 +34,7 @@ public class BusinessType {
 
         }else if (type.equalsIgnoreCase("Back") || type.equalsIgnoreCase("b")) {
                 System.out.println("Back");
-                main(new String[0]);
+                Main.main(new String[0]);
         } else {
             System.out.println("Invalid type.");
             Main.main(new String[0]);

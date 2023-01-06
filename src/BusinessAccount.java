@@ -105,7 +105,7 @@ public class BusinessAccount {
                 //searches the business csv file the business for the business
                 System.out.println("Input Business name:");
                 businessName = scanner.next();
-                String[] values = BusinessCreate.getBusinessInfo(businessName);
+                String[] values = Main.getBusinessInfo(businessName);
 
                 if (values[2].equals(businessName)){
                     //if the business is found it gets the id of the business
@@ -151,7 +151,7 @@ public class BusinessAccount {
 
             case 2: // registers new business same problem as last one
                 new BusinessCreate();
-                businessName = BusinessCreate.getLastBusiness(); // not sure what this does, probably nothing except cause the program to close
+                businessName = Main.getLastBusiness(); // not sure what this does, probably nothing except cause the program to close
                 break;
         }
         Main.main(new String[0]);

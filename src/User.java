@@ -42,6 +42,10 @@ public class User {
 
     }
 
+    public void createUser(){
+
+    }
+
     public void saveToCSV(String fileName) {//saves to users.csv
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
