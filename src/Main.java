@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.InputMismatchException;
@@ -18,9 +19,8 @@ public class Main {
 
         for (int i = 0; i < Businesses.length; i++) {
             for (int j = 0; j < Businesses[i].length; j++) {
-                System.out.print(Businesses[i][j] + ",");
+                //System.out.print(Businesses[i][j] + ",");
             }
-            System.out.println("");
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -29,7 +29,7 @@ public class Main {
 
         try {
             do {
-                displayMenu();
+                displayMenuOptions();
                 choice = scanner.nextInt();
 
                 switch (choice) {
@@ -40,7 +40,7 @@ public class Main {
                         businessCreate();
                         break;
                     case 3:
-                        ViewAccount.main(new String[0]);
+                        viewAccount();
                         break;
                     case 4:
                         DirectDebit.main(new String[0]);
@@ -61,7 +61,7 @@ public class Main {
                 }
             } while (choice < 1 || choice > 6);
 
-            scanner.close();
+            //scanner.close();
 
         } catch (InputMismatchException e) {
             System.out.println("""
@@ -128,7 +128,7 @@ public class Main {
 
     // add updateLineById, addToCSV methods here
 
-    public static void displayMenu() {
+    public static void displayMenuOptions() {
         System.out.println("1. Create account");
         System.out.println("2. Register Business");
         System.out.println("3. View account");
@@ -144,6 +144,7 @@ public class Main {
         System.out.println("1. Personal account");
         System.out.println("2. ISA account");
         System.out.println("3. Business account");
+        System.out.println("4. Create new user");
         System.out.println("4. Create new user");
         System.out.println("5. Back");
         System.out.println("6. Quit");
@@ -332,5 +333,137 @@ public class Main {
 
         return null;
     }
+
+    public static void viewAccount() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter account type (Personal (p), ISA (i), Business (b)): ");
+        String type = scanner.nextLine();
+
+        System.out.println("Search By:");
+        System.out.println("1. User ID");
+        System.out.println("2. User Details");
+        int choice = scanner.nextInt();
+
+        if (choice == 1) {
+            // Requesting user ID to search by
+            System.out.print("Enter user ID: ");
+            String userId = scanner.next();
+
+            switch (type.toLowerCase()) {
+                case "personal":
+                case "p":
+                    findAccount(userId, "PersonalAccounts.csv", "personal");
+                    break;
+                case "isa":
+                case "i":
+                    findAccount(userId,"ISAAccounts.csv", "isa");
+                    break;
+                case "business":
+                case "b":
+                    findAccount(userId,"BusinessAccounts.csv", "business");
+                    break;
+                default:
+                    System.out.println("Invalid account type.");
+                    break;
+            }
+        } else {
+            String userId = "";
+            boolean catchBlockInitiated = false;
+
+            // Requesting user details to search by
+            System.out.print("Enter first name: ");
+            String firstName = scanner.next();
+            System.out.print("Enter last name: ");
+            String lastName = scanner.next();
+            System.out.print("Enter birth year: ");
+            int birthYear = scanner.nextInt();
+            System.out.print("Enter birth month: ");
+            int birthMonth = scanner.nextInt();
+            System.out.print("Enter birth day: ");
+            int birthDay = scanner.nextInt();
+            System.out.print("Enter Postcode: ");
+            String address = scanner.next();
+
+            try {
+                userId = FindUser.findUser(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
+            } catch (DateTimeException e) {
+                System.out.println("\nInvalid date has been input. Please try again.\n");
+                catchBlockInitiated = true;
+            }
+
+            System.out.println("userID " + userId);
+
+            if (userId == null) {
+                System.out.println("This user does not exist");
+            } else {
+                switch (type.toLowerCase()) {
+                    case "personal":
+                    case "p":
+                        findAccount(userId, "PersonalAccounts.csv", "personal");
+                        break;
+                    case "isa":
+                    case "i":
+                        findAccount(userId,"ISAAccounts.csv", "isa");
+                        break;
+                    case "business":
+                    case "b":
+                        findAccount(userId,"BusinessAccounts.csv", "business");
+                        break;
+                    default:
+                        System.out.println("Invalid account type.");
+                        break;
+                }
+            }
+        }
+    }
+
+    public static void findAccount(String givenID, String filename, String accountType) {
+        //loops through csv file for an id that matches and prints all values stored with the id
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String accountID = values[0];
+                if (accountID.equals(givenID)) {
+                    System.out.println("\nRetrieving details... \nAccount Information:");
+
+                    if (accountType.equals("personal")) {
+                        //for (int i = 0; i < line.split(",").length; i++) {
+                        //    String personalAccountCSVHeadings = "personalID/accountID,ID/userID,balance,accountType";
+                        //    System.out.println(values[i];
+                        //}
+
+                        System.out.println("AccountID: " + values[0]);
+                        System.out.println("UserID: " + values[1]);
+                        System.out.println("Balance: " + values[2] + " GBP");
+                        System.out.println("Account Type: " + values[3]);
+                    }
+
+                    if (accountType.equals("isa")) {
+                        System.out.println("AccountID: " + values[0]);
+                        System.out.println("UserID: " + values[1]);
+                        System.out.println("AccountType: " + values[2]);
+                        System.out.println("Count: " + values[3]);
+                        System.out.println("Total: " + values[4]);
+                        System.out.println("Average: " + values[5]);
+                    }
+
+                    if (accountType.equals("business")) {
+                        System.out.println("AccountID: " + values[0]);
+                        System.out.println("ID: " + values[1]);
+                        System.out.println("UserID: " + values[2]);
+                        System.out.println("Balance" + values[3]);
+                        System.out.println("Year Created: " + values[4]);
+                        System.out.println("Charges: " + values[5]);
+                    }
+                    System.out.println("\n");
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to read CSV. \nClosing application.");
+        }
+    }
+
 }
 

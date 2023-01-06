@@ -74,7 +74,7 @@ public class PersonalAccount {
         System.out.print("Enter the balance: ");//checks if balance is valid
         double balance = scanner.nextDouble();
         if (balance < 1) {
-            System.out.println("User cannot create an account with less than $1");
+            System.out.println("User cannot create an account with less than £1");
         } else {
             String PersonalID = createAccount(id, balance);//if balance is > 1 saves account to csv file
             saveToCSV("PersonalAccounts.csv", PersonalID, id, balance);
@@ -112,10 +112,10 @@ public class PersonalAccount {
     public static void saveToCSV(String fileName, String PersonalID, int id, double balance) {//saves account info to csv file
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
-
             String line = PersonalID + "," + id + "," + balance + "," + "Personal";
             bw.write(line);
             bw.newLine();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

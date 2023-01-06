@@ -1,1 +1,3 @@
+personalID/accountID,ID/userID,balance,accountType
 1,1,750.0,Personal
+2,1,50.0,Personal

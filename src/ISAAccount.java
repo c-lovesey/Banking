@@ -78,7 +78,7 @@ public class ISAAccount {//business account is the most recent account creation 
         System.out.print("Enter the balance: ");
         double balance = scanner.nextDouble();
         if (balance < 1) {
-            System.out.println("User cannot create an account with less than $1");
+            System.out.println("User cannot create an account with less than £1");
         } else {
             String ISAID = createAccount(id, balance);//creates a new account
             saveToCSV("ISAAccounts.csv", ISAID, id, balance,0,balance,0);//saves account

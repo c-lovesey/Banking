@@ -58,18 +58,24 @@ public class BusinessAccount {
             if (FindUser.findUser(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
                 // if user isn't in the file it provides option to add a new user
                 System.out.println("User not found. Would you like to create a new user with this information? (y/n)");
-                scanner.next();
+                String createNewAccount = scanner.next();
 
-                System.out.println("Username: " + username);
-                System.out.println("Firstname: " + firstName);
-                System.out.println("Lastname: " + lastName);
-                System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
-                System.out.println("Address: " + address);
-                //creates the user
-                User user = new User(username, firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                //saves the user
-                user.saveToCSV("users.csv");
-                System.out.println("Account Created");
+                if (createNewAccount.equals("y")) {
+                    System.out.println("Username: " + username);
+                    System.out.println("Firstname: " + firstName);
+                    System.out.println("Lastname: " + lastName);
+                    System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
+                    System.out.println("Address: " + address);
+                    //creates the user
+                    User user = new User(username, firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
+                    //saves the user
+                    user.saveToCSV("users.csv");
+                    System.out.println("Account Created");
+                } else {
+                    System.out.println("No account created");
+                }
+
+
                 //gets the id of the created user (really weird and bad way to do this if we can get it as a return just put it here
                 userId = Integer.parseInt(FindUser.findUserid(username));
                 System.out.println("");
@@ -122,7 +128,7 @@ public class BusinessAccount {
                         System.out.print("Enter the balance: ");
                         double balance = scanner.nextDouble();
                         if (balance < 1) {
-                            System.out.println("User cannot create an account with less than $1. Please deposit a greater amount.");
+                            System.out.println("User cannot create an account with less than £1. Please deposit a greater amount.");
                         } else {
                             try (BufferedReader br = new BufferedReader(new FileReader("BusinessAccounts.csv"))) {
                                 //tries to open csv file to get business account id
@@ -245,7 +251,7 @@ public class BusinessAccount {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {//saves csv file
 
-            String line = id + "," + BusinessID + "," + UserID + "," + balance + "," + yearCreated + "," + charges;
+            String line = BusinessID + "," + id + "," + UserID + "," + balance + "," + yearCreated + "," + charges;
             bw.write(line);
             bw.newLine();
         } catch (IOException e) {

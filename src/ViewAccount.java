@@ -73,8 +73,8 @@ public class ViewAccount {
         }
     }
 
-    public static void findAccount(String id, String filename) {//loops through csv file for an id that matches and prints all values stored
-
+    public static void findAccount(String id, String filename) {
+        //loops through csv file for an id that matches and prints all values stored with the id
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -89,7 +89,7 @@ public class ViewAccount {
                 }
             }
         } catch (IOException e) {
-            return;
+            System.out.println("Unable to read CSV. \nClosing application.");
         }
         System.out.println("Account not found");
     }
