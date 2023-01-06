@@ -41,41 +41,6 @@ public class DirectDebit {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static void createDirectDebit(String id, String payee, double amount) {
-        DirectDebit directDebit = new DirectDebit(id, payee, amount);
-        directDebits[numDirectDebits] = directDebit;
-        numDirectDebits++;
-    }
-
-    public static void deleteDirectDebit(String id) {
-        for (int i = 0; i < numDirectDebits; i++) {
-            DirectDebit directDebit = directDebits[i];
-            if (directDebit.getId().equals(id)) {
-                directDebits[i] = null;
-                numDirectDebits--;
-            }
-        }
-    }
-
-    public static int getNumDirectDebits() {
-        return numDirectDebits;
-    }
-
-    public static DirectDebit[] getDirectDebits() {
-        return directDebits;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getPayee() {
-        return payee;
-    }
-
-    public double getAmount() {
-        return amount;
+        Main.main(new String[0]);
     }
 }

@@ -150,7 +150,7 @@ public class PersonalAccount {
         }
     }
 
-
+    //these classes are unused
     private static void printAccounts() {//old code which isnt used
         for (int i = 0; i < numAccounts; i++) {
             PersonalAccount account = accounts[i];
