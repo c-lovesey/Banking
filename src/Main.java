@@ -24,7 +24,6 @@ public class Main {
 //        }
 
         Scanner scanner = new Scanner(System.in);
-        Balance.changeBalance();
         int choice;
 
         try {
@@ -46,8 +45,7 @@ public class Main {
                         DirectDebit.main(new String[0]);
                         break;
                     case 5:
-                        StandingOrder.main(new String[0]);
-                        break;
+                        Balance.changeBalance();
 
                     case 6:
                         System.out.println("""
@@ -134,7 +132,7 @@ public class Main {
         System.out.println("2. Register Business");
         System.out.println("3. View account");
         System.out.println("4. Direct debit ");
-        System.out.println("5. Standing order");
+        System.out.println("5. Change Balance");
         System.out.println("6. Quit");
         System.out.print("\nEnter your choice: ");
     }

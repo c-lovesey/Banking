@@ -44,7 +44,7 @@ public class PersonalAccount {
                 System.out.print("Enter Postcode: ");
                 String address = scanner.next();
                 if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {//if user not in users.csv file creates a new user
-                    System.out.println("User not found do you wish to create a new user with this information?");
+                    System.out.print("User not found do you wish to create a new user with this information?");
                     String CreateNew = scanner.next();
                     boolean loop = true;
                     while (loop = true) {
@@ -72,12 +72,16 @@ public class PersonalAccount {
                                     id = 1;//if no file sets id to 1
                                 }
                                 loop = false;
+                                break;
+
                             case "no":
                             case "n":
                                 main(new String[0]);
+                                break;
 
                             default:
                                 System.out.println("Invalid input please type yes or no.");
+                                break;
                         }
                     }
                 } else {

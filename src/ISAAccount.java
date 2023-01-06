@@ -106,7 +106,7 @@ public class ISAAccount {//business account is the most recent account creation 
             System.out.println("User cannot create an account with less than $1");
         } else {
             String ISAID = createAccount(id, balance);//creates a new account
-            saveToCSV("ISAAccounts.csv", ISAID, id, balance, 0, balance, 0);//saves account
+            saveToCSV("ISAAccounts.csv", ISAID, id, balance, 1, balance, 0);//saves account
             System.out.println("ISA Account Created.");
         }
 
@@ -193,7 +193,7 @@ public class ISAAccount {//business account is the most recent account creation 
         }
 
     }
-    public static void updateAverage(String isaid, double sum, int count,double balance) {
+    public static void updateAverage(String isaid, double sum, int count,double balance) {// this would have to be updated every day in order to get the average balance over a year, it only acts as the average balance added
         try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -203,9 +203,7 @@ public class ISAAccount {//business account is the most recent account creation 
                 balance = Double.parseDouble(bal);
                 if (idCSV.equals(isaid)) {
                     double total = sum + balance;
-                    System.out.println(count);
                     count++;
-                    System.out.println(count);
                     double average = total / count;
                     List<String> list = new ArrayList<>();
 
@@ -216,18 +214,16 @@ public class ISAAccount {//business account is the most recent account creation 
                     list.add(String.valueOf(count));
                     list.add(String.valueOf(total));
                     list.add(String.valueOf(average));
-                    System.out.println(list);
                     updateLineById("ISAAccounts.csv", values[0], list);
                 }
             }
         } catch (IOException e) {
-
+            System.out.println("Error updating balance.");
         }
     }
 
     public static void updateLineById(String filePath, String id, List<String> newValues) throws IOException {
         // Read the CSV file
-
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             StringBuilder fileContent = new StringBuilder();

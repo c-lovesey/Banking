@@ -30,8 +30,14 @@ public class User {
         if (idList.isEmpty()) {
             this.userId = "1";
         } else {
-            int lastIdInt = Integer.parseInt(idList.get(idList.size())) + 1;//sets the users id
-            this.userId = Integer.toString(lastIdInt);
+            try {
+                int lastIdInt = Integer.parseInt(idList.get(idList.size())) + 1;//sets the users id
+                this.userId = Integer.toString(lastIdInt);
+            }
+            catch (Exception e){
+                this.userId = "1";
+            }
+
         }
 
         this.username = username;
