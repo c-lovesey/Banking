@@ -24,6 +24,7 @@ public class FindUser {
         try (BufferedReader br = new BufferedReader(new FileReader("users.csv"))) {//tries to open csv file
             String line;
             while ((line = br.readLine()) != null) {//gets all lines
+                System.out.println(line);
                 String[] values = line.split(",");//splits on the comma
                 String userId = values[0];//gets all the info
                 String firstNameFromFile = values[2];

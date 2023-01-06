@@ -23,51 +23,71 @@ public class PersonalAccount {
         System.out.println("Personal account Creation");
         System.out.println("1. Search with User ID");
         System.out.println("2. Search with User details");
+        System.out.println("3. Back");
+        System.out.println("");
+        System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
-        if (choice == 2) {//asks for user information
-            System.out.print("Enter Username: ");
-            String Username = scanner.next();
-            System.out.print("Enter Firstname: ");
-            String Firstname = scanner.next();
-            System.out.print("Enter LastName: ");
-            String Lastname = scanner.next();
-            System.out.print("Enter Year of Birth: ");
-            int birthYear = scanner.nextInt();
-            System.out.print("Enter month of Birth: ");
-            int birthMonth = scanner.nextInt();
-            System.out.print("Enter day of Birth: ");
-            int birthDay = scanner.nextInt();
-            System.out.print("Enter Postcode: ");
-            String address = scanner.next();
-            if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {//if user not in users.csv file creates a new user
-                System.out.println("User not found do you wish to create a new user with this information?");
+        switch (choice) {
+            case 2:
+                System.out.print("Enter Username: ");
+                String Username = scanner.next();
+                System.out.print("Enter Firstname: ");
+                String Firstname = scanner.next();
+                System.out.print("Enter LastName: ");
+                String Lastname = scanner.next();
+                System.out.print("Enter Year of Birth: ");
+                int birthYear = scanner.nextInt();
+                System.out.print("Enter month of Birth: ");
+                int birthMonth = scanner.nextInt();
+                System.out.print("Enter day of Birth: ");
+                int birthDay = scanner.nextInt();
+                System.out.print("Enter Postcode: ");
+                String address = scanner.next();
+                if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {//if user not in users.csv file creates a new user
+                    System.out.println("User not found do you wish to create a new user with this information?");
+                    String CreateNew = scanner.next();
+                    boolean loop = true;
+                    while (loop = true) {
+                        switch (CreateNew.toLowerCase()) {
+                            case "yes":
+                            case "y":
+                                System.out.println("Username: " + Username);
+                                System.out.println("Firstname: " + Firstname);
+                                System.out.println("Lastname: " + Lastname);
+                                System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
+                                System.out.println("Address: " + address);
+                                User user = new User(Username, Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
+                                user.saveToCSV("users.csv");
+                                System.out.println("Account Created");
+                                System.out.println("");
 
-                System.out.println("Username: " + Username);
-                System.out.println("Firstname: " + Firstname);
-                System.out.println("Lastname: " + Lastname);
-                System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
-                System.out.println("Address: " + address);
-                User user = new User(Username, Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                user.saveToCSV("users.csv");
-                System.out.println("Account Created");
-                System.out.println("");
+                                try (BufferedReader br = new BufferedReader(new FileReader("PersonalAccounts.csv"))) {//gets the id value of last in csv file and adds 1
+                                    String line;
+                                    while ((line = br.readLine()) != null) {
+                                        String[] values = line.split(",");
+                                        String IDCSV = values[0];
+                                        id = Integer.parseInt(IDCSV) + 1;
+                                    }
+                                } catch (IOException e) {
+                                    id = 1;//if no file sets id to 1
+                                }
+                                loop = false;
+                            case "no":
+                            case "n":
+                                main(new String[0]);
 
-                try (BufferedReader br = new BufferedReader(new FileReader("PersonalAccounts.csv"))) {//gets the id value of last in csv file and adds 1
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        String[] values = line.split(",");
-                        String IDCSV = values[0];
-                        id = Integer.parseInt(IDCSV) + 1;
+                            default:
+                                System.out.println("Invalid input please type yes or no.");
+                        }
                     }
-                } catch (IOException e) {
-                    id = 1;//if no file sets id to 1
+                } else {
+                    id = Integer.parseInt(FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address));//if the user is in the csv file it gets the id
                 }
-            } else {
-                id = Integer.parseInt(FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address));//if the user is in the csv file it gets the id
-            }
-        } else {
-            System.out.print("Enter ID: ");//asks user for id
-            id = scanner.nextInt();
+            case 1:
+                System.out.print("Enter ID: ");//asks user for id
+                id = scanner.nextInt();
+            case 3:
+                Main.main(new String[0]);
         }
 
 
@@ -79,6 +99,7 @@ public class PersonalAccount {
             String PersonalID = createAccount(id, balance);//if balance is > 1 saves account to csv file
             saveToCSV("PersonalAccounts.csv", PersonalID, id, balance);
             System.out.println("Personal Account Created.");
+            System.out.println("");
         }
 
         Main.main(new String[0]);

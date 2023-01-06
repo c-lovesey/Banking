@@ -10,21 +10,21 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        String[][] UsersArray = readCSV("users.csv");
-        String[][] PersonalAccount = readCSV("PersonalAccounts.csv");
-        String[][] ISAAccount = readCSV("ISAAccounts.csv");
-        String[][] BusinessAccount = readCSV("BusinessAccounts.csv");
-        String[][] Businesses = readCSV("businesses.csv");
-
-        for (int i = 0; i < Businesses.length; i++) {
-            for (int j = 0; j < Businesses[i].length; j++) {
-                System.out.print(Businesses[i][j] + ",");
-            }
-            System.out.println("");
-        }
+//        String[][] UsersArray = readCSV("users.csv");
+//        String[][] PersonalAccount = readCSV("PersonalAccounts.csv");
+//        String[][] ISAAccount = readCSV("ISAAccounts.csv");
+//        String[][] BusinessAccount = readCSV("BusinessAccounts.csv");
+//        String[][] Businesses = readCSV("businesses.csv");
+//
+//        for (int i = 0; i < Businesses.length; i++) {
+//            for (int j = 0; j < Businesses[i].length; j++) {
+//                System.out.print(Businesses[i][j] + ",");
+//            }
+//            System.out.println("");
+//        }
 
         Scanner scanner = new Scanner(System.in);
-
+        Balance.changeBalance();
         int choice;
 
         try {
@@ -64,10 +64,11 @@ public class Main {
             scanner.close();
 
         } catch (InputMismatchException e) {
-            System.out.println("""
-                    Invalid input. Please enter a number as referenced in the menu options.
-                    Closing application...
-                    """);
+//            System.out.println("""
+//                    Invalid input. Please enter a number as referenced in the menu options.
+//                    Closing application...
+//                    """);
+            main(new String[0]);
         }
     }
 

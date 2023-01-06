@@ -54,6 +54,7 @@ public class Balance {
                 values = accountDetails(id, filepath);
                 balance = Double.parseDouble(values[2]);
                 balance = calcbalance(amount, balance);
+                ISAAccount.updateAverage(id,Double.parseDouble(values[5]),Integer.parseInt(values[4]),balance);
                 insertPoint = 2;
                 addtofile(values,insertPoint,balance,id,filepath);
                 break;
