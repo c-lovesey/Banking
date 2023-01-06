@@ -23,57 +23,82 @@ public class ISAAccount {//business account is the most recent account creation 
         System.out.println("ISA account Creation");
         System.out.println("1. Search with User ID");
         System.out.println("2. Search with User details");
+        System.out.println("3. Back");
+        System.out.println("");
+        System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
-        if (choice == 2) {//same user input probs do need to put this in a method
-            System.out.print("Enter Username: ");
-            String Username = scanner.nextLine();
-            System.out.print("Enter Firstname: ");
-            String Firstname = scanner.nextLine();
-            System.out.print("Enter LastName: ");
-            String Lastname = scanner.nextLine();
-            System.out.print("Enter Year of Birth: ");
-            int birthYear = scanner.nextInt();
-            System.out.print("Enter month of Birth: ");
-            int birthMonth = scanner.nextInt();
-            System.out.print("Enter day of Birth: ");
-            int birthDay = scanner.nextInt();
-            System.out.print("Enter Postcode: ");
-            String address = scanner.nextLine();
-            if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
-                System.out.println("User not found do you wish to create a new user with this information?");
+        switch (choice) {
+            case 2:
+                System.out.print("Enter Username: ");
+                String Username = scanner.nextLine();
+                System.out.print("Enter Firstname: ");
+                String Firstname = scanner.nextLine();
+                System.out.print("Enter LastName: ");
+                String Lastname = scanner.nextLine();
+                System.out.print("Enter Year of Birth: ");
+                int birthYear = scanner.nextInt();
+                System.out.print("Enter month of Birth: ");
+                int birthMonth = scanner.nextInt();
+                System.out.print("Enter day of Birth: ");
+                int birthDay = scanner.nextInt();
+                System.out.print("Enter Postcode: ");
+                String address = scanner.nextLine();
+                if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
+                    System.out.println("User not found do you wish to create a new user with this information?");
+                    String CreateNew = scanner.next();
+                    boolean loop = true;
+                    while (loop = true) {
+                        switch (CreateNew.toLowerCase()) {
+                            case "yes":
+                            case "y":
 
-                System.out.println("Username: " + Username);
-                System.out.println("Firstname: " + Firstname);
-                System.out.println("Lastname: " + Lastname);
-                System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
-                System.out.println("Address: " + address);
-                User user = new User(Username, Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                user.saveToCSV("users.csv");
-                System.out.println("Account Created");
-                System.out.println("");
+                                System.out.println("Username: " + Username);
+                                System.out.println("Firstname: " + Firstname);
+                                System.out.println("Lastname: " + Lastname);
+                                System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
+                                System.out.println("Address: " + address);
+                                User user = new User(Username, Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
+                                user.saveToCSV("users.csv");
+                                System.out.println("Account Created");
+                                System.out.println("");
 
-                try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {//gets last id
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        String[] values = line.split(",");
-                        String IDCSV = values[0];
-                        id = Integer.parseInt(IDCSV) + 1;
+                                try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {//gets last id
+                                    String line;
+                                    while ((line = br.readLine()) != null) {
+                                        String[] values = line.split(",");
+                                        String IDCSV = values[0];
+                                        id = Integer.parseInt(IDCSV) + 1;
+                                    }
+                                } catch (IOException e) {
+                                    id = 1;
+                                }
+                                loop = false;
+                            case "no":
+                            case "n":
+                                main(new String[0]);
+
+                            default:
+                                System.out.println("Invalid input please type yes or no.");
+                        }
                     }
-                } catch (IOException e) {
-                    id = 1;
+                } else {//checks if they already have an isa account
+                    String New = FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
+                    if (findID(New) == true) {
+                        System.out.println("User already has an ISA account");
+                        main(new String[0]);
+                    }
                 }
-            } else {//checks if they already have an isa account
-                String New = FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                if (findID(New) == true) {
-                    System.out.println("User already has an ISA account");
-                    main(new String[0]);
-                }
-            }
-        } else {//asks for id to be entered
-            System.out.print("Enter ID: ");
-            id = scanner.nextInt();
+                break;
+            case 1://asks for id to be entered
+                System.out.print("Enter ID: ");
+                id = scanner.nextInt();
+                break;
+            case 3:
+                Main.main(new String[0]);
+                break;
+            default:
+                System.out.println("Invalid input please type yes or no.");
         }
-
 
         System.out.print("Enter the balance: ");
         double balance = scanner.nextDouble();
@@ -81,7 +106,7 @@ public class ISAAccount {//business account is the most recent account creation 
             System.out.println("User cannot create an account with less than $1");
         } else {
             String ISAID = createAccount(id, balance);//creates a new account
-            saveToCSV("ISAAccounts.csv", ISAID, id, balance,0,balance,0);//saves account
+            saveToCSV("ISAAccounts.csv", ISAID, id, balance, 1, balance, 0);//saves account
             System.out.println("ISA Account Created.");
         }
 
@@ -133,7 +158,7 @@ public class ISAAccount {//business account is the most recent account creation 
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
 
-            String line = ISAID + "," + id + "," + balance + "," + "ISA" + count + "," + total + "," + average;
+            String line = ISAID + "," + id + "," + balance + "," + "ISA" +","+ count + "," + total + "," + average;
             bw.write(line);
             bw.newLine();
         } catch (IOException e) {
@@ -168,13 +193,14 @@ public class ISAAccount {//business account is the most recent account creation 
         }
 
     }
-    public void updateAverage(String isaid, double sum, int count) {
+    public static void updateAverage(String isaid, double sum, int count,double balance) {// this would have to be updated every day in order to get the average balance over a year, it only acts as the average balance added
         try (BufferedReader br = new BufferedReader(new FileReader("ISAAccounts.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 String idCSV = values[0];
-                int balance = Integer.parseInt(values[2]);
+                String bal = values[2];
+                balance = Double.parseDouble(bal);
                 if (idCSV.equals(isaid)) {
                     double total = sum + balance;
                     count++;
@@ -186,20 +212,18 @@ public class ISAAccount {//business account is the most recent account creation 
                     list.add(values[2]);
                     list.add(values[3]);
                     list.add(String.valueOf(count));
-                    list.add(values[(int) total]);
-                    list.add(values[(int) average]);
-
+                    list.add(String.valueOf(total));
+                    list.add(String.valueOf(average));
                     updateLineById("ISAAccounts.csv", values[0], list);
                 }
             }
         } catch (IOException e) {
-
+            System.out.println("Error updating balance.");
         }
     }
 
     public static void updateLineById(String filePath, String id, List<String> newValues) throws IOException {
         // Read the CSV file
-
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             StringBuilder fileContent = new StringBuilder();
@@ -212,7 +236,7 @@ public class ISAAccount {//business account is the most recent account creation 
                 // Check if the ID field matches the ID we are looking for
                 if (fields[0].equals(id)) {
                     // Replace the values of the line with the new values
-                    System.out.println(newValues);
+                    //System.out.println(newValues);
                     fileContent.append(String.join(",", newValues)).append("\n");
                 } else {
                     // Keep the original line
