@@ -85,7 +85,7 @@ public class ISAAccount {//business account is the most recent account creation 
             System.out.println("ISA Account Created.");
         }
 
-        Menu.main(new String[0]);
+        Main.main(new String[0]);
 
     }
 
@@ -212,6 +212,7 @@ public class ISAAccount {//business account is the most recent account creation 
                 // Check if the ID field matches the ID we are looking for
                 if (fields[0].equals(id)) {
                     // Replace the values of the line with the new values
+                    System.out.println(newValues);
                     fileContent.append(String.join(",", newValues)).append("\n");
                 } else {
                     // Keep the original line
