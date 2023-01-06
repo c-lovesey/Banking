@@ -24,7 +24,7 @@ public class User {
                 idList.add(values[0]);
             }
         } catch (IOException e) {
-
+            System.out.println("Unable to read Users.csv");
         }
 
         if (idList.isEmpty()) {

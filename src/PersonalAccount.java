@@ -81,7 +81,7 @@ public class PersonalAccount {
             System.out.println("Personal Account Created.");
         }
 
-        Menu.main(new String[0]);
+        Main.main(new String[0]);
 
     }
 
@@ -129,7 +129,7 @@ public class PersonalAccount {
         }
     }
     private static void goBack() {
-        Menu.main(new String[0]);
+        Main.main(new String[0]);
     }
 
     public static int getNumAccounts() {

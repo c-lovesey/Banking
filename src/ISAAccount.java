@@ -85,7 +85,7 @@ public class ISAAccount {//business account is the most recent account creation 
             System.out.println("ISA Account Created.");
         }
 
-        Menu.main(new String[0]);
+        Main.main(new String[0]);
 
     }
 

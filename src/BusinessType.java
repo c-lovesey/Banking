@@ -36,7 +36,7 @@ public class BusinessType {
                 main(new String[0]);
         } else {
             System.out.println("Invalid type.");
-            Menu.main(new String[0]);
+            Main.main(new String[0]);
         }
     }
 }

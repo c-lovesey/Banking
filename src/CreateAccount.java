@@ -55,7 +55,7 @@ public class CreateAccount {
                 user.saveToCSV("users.csv");
                 System.out.println("Account Created");
                 System.out.println("");
-                Menu.main(new String[0]);
+                Main.main(new String[0]);
             }else{
                 System.out.println("A user with these details already exists");
                     main(new String[0]);
@@ -65,7 +65,7 @@ public class CreateAccount {
 
             break;
             case 5:
-                Menu.main(new String[0]);
+                Main.main(new String[0]);
                 break;
             case 6:
                 break;

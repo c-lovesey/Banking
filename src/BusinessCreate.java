@@ -25,7 +25,7 @@ public class BusinessCreate {//adds a business to
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("businesses.csv", true))){//checks for csv file
             if (getBusinessInfo(BusinessName)[0].equals("null")) {//if business not in file saves it to file  getBusinessInfo
                 saveToCSV("businesses.csv", id, BusinessName, type);
-                Menu.main(new String[0]);
+                Main.main(new String[0]);
             } else {//else says no
                 System.out.println("A business with this name already exists");
             }
@@ -34,7 +34,7 @@ public class BusinessCreate {//adds a business to
             saveToCSV("businesses.csv", id, BusinessName, type);
 
         }
-        Menu.main(new String[0]);//returns to menu
+        Main.main(new String[0]);//returns to menu
     }
     public static void saveToCSV(String fileName, int id, String name, String type) {//same save csv file thing just different lines being saved
         int currentYear = Year.now().getValue();
