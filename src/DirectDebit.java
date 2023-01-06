@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class DirectDebit {
@@ -21,14 +23,24 @@ public class DirectDebit {
 
         System.out.print("Enter the ID: ");
         String id = scanner.nextLine();
+        String[] PayUser = FindUser.findByID(id);
 
         System.out.print("Enter the payee: ");
         String payee = scanner.nextLine();
+        String[] PaidUser = FindUser.findByID(payee);
+
 
         System.out.print("Enter the amount: ");
         double amount = scanner.nextDouble();
+        PayUser[2] = String.valueOf(Double.parseDouble(PayUser[2]) - amount);
+        PaidUser[2] = String.valueOf(Double.parseDouble(PaidUser[2]) + amount);
+        try {
 
-        createDirectDebit(id, payee, amount);
+            ISAAccount.updateLineById("PersonalAccounts.csv",id, List.of(PayUser));
+            ISAAccount.updateLineById("PersonalAccounts.csv",payee, List.of(PaidUser));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void createDirectDebit(String id, String payee, double amount) {
