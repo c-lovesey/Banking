@@ -30,11 +30,11 @@ public class ISAAccount {//business account is the most recent account creation 
         switch (choice) {
             case 2:
                 System.out.print("Enter Username: ");
-                String Username = scanner.nextLine();
+                String Username = scanner.next();
                 System.out.print("Enter Firstname: ");
-                String Firstname = scanner.nextLine();
+                String Firstname = scanner.next();
                 System.out.print("Enter LastName: ");
-                String Lastname = scanner.nextLine();
+                String Lastname = scanner.next();
                 System.out.print("Enter Year of Birth: ");
                 int birthYear = scanner.nextInt();
                 System.out.print("Enter month of Birth: ");
@@ -42,12 +42,12 @@ public class ISAAccount {//business account is the most recent account creation 
                 System.out.print("Enter day of Birth: ");
                 int birthDay = scanner.nextInt();
                 System.out.print("Enter Postcode: ");
-                String address = scanner.nextLine();
+                String address = scanner.next();
                 if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
-                    System.out.println("User not found do you wish to create a new user with this information?");
+                    System.out.print("User not found do you wish to create a new user with this information?");
                     String CreateNew = scanner.next();
                     boolean loop = true;
-                    while (loop = true) {
+                    while (loop == true) {
                         switch (CreateNew.toLowerCase()) {
                             case "yes":
                             case "y":
@@ -73,15 +73,19 @@ public class ISAAccount {//business account is the most recent account creation 
                                     id = 1;
                                 }
                                 loop = false;
+                                break;
                             case "no":
                             case "n":
                                 main(new String[0]);
+                                break;
 
                             default:
                                 System.out.println("Invalid input please type yes or no.");
+                                break;
                         }
                     }
                 } else {//checks if they already have an isa account
+                    System.out.println("User found");
                     String New = FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
                     if (findID(New) == true) {
                         System.out.println("User already has an ISA account");
