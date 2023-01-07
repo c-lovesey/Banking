@@ -17,24 +17,28 @@ public class PersonalAccount {
         this.balance = balance;
     }
 
-    public static void main(String[] args) {
+    public static void createPersonalAccount() {
         int id = 0;
         Scanner scanner = new Scanner(System.in);//asks how to search for user
-        System.out.println("Personal account Creation");
-        System.out.println("1. Search with User ID");
-        System.out.println("2. Search with User details");
+        System.out.println("Create Personal Account");
+        System.out.println("1. Search with Customer ID");
+        System.out.println("2. Search with Customer details");
         System.out.println("3. Back");
         System.out.println("");
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
         switch (choice) {
+            case 1:
+                System.out.print("Enter Account ID: ");
+                id = scanner.nextInt();
+                break;
             case 2:
                 System.out.print("Enter Username: ");
-                String Username = scanner.next();
+                String username = scanner.next();
                 System.out.print("Enter Firstname: ");
-                String Firstname = scanner.next();
+                String firstName = scanner.next();
                 System.out.print("Enter LastName: ");
-                String Lastname = scanner.next();
+                String lastName = scanner.next();
                 System.out.print("Enter Year of Birth: ");
                 int birthYear = scanner.nextInt();
                 System.out.print("Enter month of Birth: ");
@@ -43,22 +47,23 @@ public class PersonalAccount {
                 int birthDay = scanner.nextInt();
                 System.out.print("Enter Postcode: ");
                 String address = scanner.next();
-                if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {//if user not in users.csv file creates a new user
-                    System.out.print("User not found do you wish to create a new user with this information?");
-                    String CreateNew = scanner.next();
+                if (CustomerSearch.findCustomer(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
+                    //if customer not in Customers.csv file creates a new customer record
+                    System.out.print("Customer not found. Do you wish to create a new user with this information?");
+                    String createNew = scanner.next();
                     boolean loop = true;
                     while (loop == true) {
-                        switch (CreateNew.toLowerCase()) {
+                        switch (createNew.toLowerCase()) {
                             case "yes":
                             case "y":
                                 loop = false;
-                                System.out.println("Username: " + Username);
-                                System.out.println("Firstname: " + Firstname);
-                                System.out.println("Lastname: " + Lastname);
+                                System.out.println("Username: " + username);
+                                System.out.println("Firstname: " + firstName);
+                                System.out.println("Lastname: " + lastName);
                                 System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
                                 System.out.println("Address: " + address);
-                                User user = new User(Username, Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                                user.saveToCSV("users.csv");
+                                Customer customer = new Customer(username, firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
+                                customer.saveToCSV("Customers.csv");
                                 System.out.println("Account Created");
                                 System.out.println("");
 
@@ -77,24 +82,20 @@ public class PersonalAccount {
 
                             case "no":
                             case "n":
-                                main(new String[0]);
+                                createPersonalAccount();
                                 break;
 
                             default:
-                                System.out.println("Invalid input please type yes or no.");
+                                System.out.println("Invalid input. Please enter Yes (y) or No (n).");
                                 break;
                         }
                     }
                 } else {
-                    id = Integer.parseInt(FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address));//if the user is in the csv file it gets the id
+                    id = Integer.parseInt(CustomerSearch.findCustomer(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address));//if the customer is in the csv file, return customer id
                 }
                 break;
-            case 1:
-                System.out.print("Enter ID: ");//asks user for id
-                id = scanner.nextInt();
-                break;
             case 3:
-                Main.main(new String[0]);
+                BankingApplication.displayMainMenu();
                 break;
         }
 
@@ -102,7 +103,7 @@ public class PersonalAccount {
         System.out.print("Enter the balance: ");//checks if balance is valid
         double balance = scanner.nextDouble();
         if (balance < 1) {
-            System.out.println("User cannot create an account with less than $1");
+            System.out.println("Customer cannot create an account with less than $1");
         } else {
             String PersonalID = createAccount(id, balance);//if balance is > 1 saves account to csv file
             saveToCSV("PersonalAccounts.csv", PersonalID, id, balance);
@@ -110,7 +111,7 @@ public class PersonalAccount {
             System.out.println("");
         }
 
-        Main.main(new String[0]);
+        BankingApplication.displayMainMenu();
 
     }
 
@@ -158,9 +159,8 @@ public class PersonalAccount {
         }
     }
     private static void goBack() {
-        Main.main(new String[0]);
+        BankingApplication.displayMainMenu();
     }
-
     public static int getNumAccounts() {
         return numAccounts;
     }

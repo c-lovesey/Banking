@@ -11,8 +11,8 @@ public class ViewAccount {
         System.out.print("Enter the account type (personal (p), ISA, business (b)): ");
         String type = scanner.nextLine();
         //add a catch for type
-        System.out.println("1. Search with User ID");
-        System.out.println("2. Search with User details");
+        System.out.println("1. Search with Customer ID");
+        System.out.println("2. Search with Customer details");
         int choice = scanner.nextInt();
         if (choice == 1) {
 
@@ -37,33 +37,33 @@ public class ViewAccount {
             }
         } else {
             System.out.print("Enter Firstname: ");
-            String Firstname = scanner.next();
+            String firstName = scanner.next();
             System.out.print("Enter LastName: ");
-            String Lastname = scanner.next();
-            System.out.print("Enter Year of Birth: ");
-            int birthYear = scanner.nextInt();
-            System.out.print("Enter month of Birth: ");
-            int birthMonth = scanner.nextInt();
-            System.out.print("Enter day of Birth: ");
+            String lastName = scanner.next();
+            System.out.print("Enter birth DAY (dd): ");
             int birthDay = scanner.nextInt();
-            System.out.print("Enter Postcode: ");
-            String address = scanner.next();
-            String Uid = FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
-            if (Uid == null) {
+            System.out.print("Enter birth MONTH (mm): ");
+            int birthMonth = scanner.nextInt();
+            System.out.print("Enter birth YEAR (yyy): ");
+            int birthYear = scanner.nextInt();
+            System.out.print("Enter postcode: ");
+            String postcode = scanner.next();
+            String CustomerId = CustomerSearch.findCustomer(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), postcode);
+            if (CustomerId == null) {
                 System.out.println("This user does not exist");
             } else {
                 switch (type.toLowerCase()) {
                     case "personal":
                     case "p":
-                        findAccount(Uid, "PersonalAccounts.csv");
+                        findAccount(CustomerId, "PersonalAccounts.csv");
                         break;
                     case "isa":
                     case "i":
-                        findAccount(Uid,"ISAAccounts.csv");
+                        findAccount(CustomerId,"ISAAccounts.csv");
                         break;
                     case "business":
                     case "b":
-                        findAccount(Uid,"BusinessAccounts.csv");
+                        findAccount(CustomerId,"BusinessAccounts.csv");
                         break;
                     default:
                         System.out.println("Invalid account type.");
@@ -73,14 +73,14 @@ public class ViewAccount {
         }
     }
 
-    public static void findAccount(String id, String filename) {//loops through csv file for an id that matches and prints all values stored
-
+    public static void findAccount(String id, String filename) {
+        //loops through csv file for an id that matches and prints all values stored
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                String Aid = values[0];
-                if (Aid.equals(id)) {
+                String accountId = values[0];
+                if (accountId.equals(id)) {
                     for (int i = 0; i < line.split(",").length; i++) {
                         System.out.println(values[i]);
 
@@ -91,6 +91,6 @@ public class ViewAccount {
         } catch (IOException e) {
             return;
         }
-        System.out.println("Account not found");
+        System.out.println("Account not found.");
     }
 }

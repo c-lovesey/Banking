@@ -7,24 +7,25 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class Customer {
     private String userId;
     private String username;
     private String firstName;
     private String lastName;
     private String address;
     private LocalDate dateOfBirth;
-    public User(String username, String firstName, String lastName, LocalDate dateOfBirth, String address) {//reads the users file
+
+    public Customer(String username, String firstName, String lastName, LocalDate dateOfBirth, String address) {
         List<String> idList = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("users.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("Customers.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 idList.add(values[0]);
             }
         } catch (IOException e) {
-            System.out.println("Unable to read Users.csv");
+            System.out.println("Unable to read Customers.csv");
         }
 
         if (idList.isEmpty()) {
@@ -52,8 +53,8 @@ public class User {
 
     }
 
-    public void saveToCSV(String fileName) {//saves to users.csv
-
+    public void saveToCSV(String fileName) {
+        //saves to Customers.csv
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
 
             String line = userId + "," + username + "," + firstName + "," + lastName + "," + dateOfBirth + "," + address;

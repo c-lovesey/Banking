@@ -21,8 +21,8 @@ public class ISAAccount {//business account is the most recent account creation 
         //asks how to search
         int id = 0;
         System.out.println("ISA account Creation");
-        System.out.println("1. Search with User ID");
-        System.out.println("2. Search with User details");
+        System.out.println("1. Search with Customer ID");
+        System.out.println("2. Search with Customer details");
         System.out.println("3. Back");
         System.out.println("");
         System.out.print("Enter your choice: ");
@@ -30,11 +30,11 @@ public class ISAAccount {//business account is the most recent account creation 
         switch (choice) {
             case 2:
                 System.out.print("Enter Username: ");
-                String Username = scanner.next();
+                String username = scanner.next();
                 System.out.print("Enter Firstname: ");
-                String Firstname = scanner.next();
+                String firstName = scanner.next();
                 System.out.print("Enter LastName: ");
-                String Lastname = scanner.next();
+                String lastName = scanner.next();
                 System.out.print("Enter Year of Birth: ");
                 int birthYear = scanner.nextInt();
                 System.out.print("Enter month of Birth: ");
@@ -43,8 +43,8 @@ public class ISAAccount {//business account is the most recent account creation 
                 int birthDay = scanner.nextInt();
                 System.out.print("Enter Postcode: ");
                 String address = scanner.next();
-                if (FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
-                    System.out.print("User not found do you wish to create a new user with this information?");
+                if (CustomerSearch.findCustomer(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address) == null) {
+                    System.out.print("Customer not found do you wish to create a new user with this information?");
                     String CreateNew = scanner.next();
                     boolean loop = true;
                     while (loop == true) {
@@ -52,13 +52,13 @@ public class ISAAccount {//business account is the most recent account creation 
                             case "yes":
                             case "y":
 
-                                System.out.println("Username: " + Username);
-                                System.out.println("Firstname: " + Firstname);
-                                System.out.println("Lastname: " + Lastname);
+                                System.out.println("Username: " + username);
+                                System.out.println("Firstname: " + firstName);
+                                System.out.println("Lastname: " + lastName);
                                 System.out.println("Date of Birth: " + LocalDate.of(birthYear, birthMonth, birthDay));
                                 System.out.println("Address: " + address);
-                                User user = new User(Username, Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
-                                user.saveToCSV("users.csv");
+                                Customer user = new Customer(username, firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
+                                user.saveToCSV("Customers.csv");
                                 System.out.println("Account Created");
                                 System.out.println("");
 
@@ -85,10 +85,10 @@ public class ISAAccount {//business account is the most recent account creation 
                         }
                     }
                 } else {//checks if they already have an isa account
-                    System.out.println("User found");
-                    String New = FindUser.findUser(Firstname, Lastname, LocalDate.of(birthYear, birthMonth, birthDay), address);
+                    System.out.println("Customer found");
+                    String New = CustomerSearch.findCustomer(firstName, lastName, LocalDate.of(birthYear, birthMonth, birthDay), address);
                     if (findID(New) == true) {
-                        System.out.println("User already has an ISA account");
+                        System.out.println("Customer already has an ISA account");
                         main(new String[0]);
                     }
                 }
@@ -98,7 +98,7 @@ public class ISAAccount {//business account is the most recent account creation 
                 id = scanner.nextInt();
                 break;
             case 3:
-                Main.main(new String[0]);
+                BankingApplication.displayMainMenu();
                 break;
             default:
                 System.out.println("Invalid input please type yes or no.");
@@ -107,14 +107,14 @@ public class ISAAccount {//business account is the most recent account creation 
         System.out.print("Enter the balance: ");
         double balance = scanner.nextDouble();
         if (balance < 1) {
-            System.out.println("User cannot create an account with less than $1");
+            System.out.println("Customer cannot create an account with less than $1");
         } else {
             String ISAID = createAccount(id, balance);//creates a new account
             saveToCSV("ISAAccounts.csv", ISAID, id, balance, 1, balance, 0);//saves account
             System.out.println("ISA Account Created.");
         }
 
-        Main.main(new String[0]);
+        BankingApplication.displayMainMenu();
 
     }
 
