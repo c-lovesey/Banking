@@ -267,10 +267,10 @@ public class BankingApplication {
     public static void businessCreate() {
         System.out.println("Register Business");
         System.out.print("Enter business name: ");
-        String businessName = scanner.nextLine();
+        String businessName = scanner.next();
 
         System.out.print("Enter the business type \n(Sole Trader (ST), Limited Company (LC), Partnership (P), Enterprise (E), Public Limited Company (PLC), Charity (C), Public Sector(PS)): ");
-        String type = scanner.nextLine();
+        String type = scanner.next();
         validateBusinessType(businessName, type);
 
         int id = 1;
@@ -347,11 +347,12 @@ public class BankingApplication {
 
     public static void viewAccount() {
         System.out.print("Enter account type (Personal (p), ISA (i), Business (b)): ");
-        String type = scanner.nextLine();
+        String type = scanner.next();
 
         System.out.println("Search By:");
         System.out.println("1. Customer ID");
         System.out.println("2. Customer Details");
+        System.out.print("Enter your Choice: ");
         int choice = scanner.nextInt();
 
         if (choice == 1) {
@@ -467,10 +468,10 @@ public class BankingApplication {
                         System.out.println("Charges: " + values[5]);
                     }
 
-                    System.out.println("Would you like to return to the main menu?");
+                    System.out.print("Would you like to return to the main menu (Y/N)?: ");
                     String returnToMenu = scanner.next().toLowerCase();
 
-                    if (returnToMenu.equals("y")) {
+                    if (returnToMenu.equals("y") || returnToMenu.equals("yes")) {
                         displayMainMenu();
                     } else {
                         System.out.println("Thank you. \nClosing application...");
@@ -593,14 +594,17 @@ public class BankingApplication {
     public static void createDirectDebit() {
         System.out.println("Enter the details of the customer setting up the direct.");
         System.out.print("Enter the ID (Customer Account ID): ");
-        String id = scanner.nextLine();
+        String id = scanner.next();
         String[] payUser = CustomerSearch.findById(id);
 
         System.out.println("Enter the details for the recipient account of the direct debit.");
         System.out.print("Enter the payee: ");
-        String payee = scanner.nextLine();
+        String payee = scanner.next();
         String[] paidUser = CustomerSearch.findById(payee);
-
+        if (paidUser == null || payUser == null){
+            System.out.println("Could not find user.");
+            createDirectDebit();
+        }
         System.out.print("Enter the direct debit amount (GBP): ");
         double amount = scanner.nextDouble();
         payUser[2] = String.valueOf(Double.parseDouble(payUser[2]) - amount);
